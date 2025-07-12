@@ -45,6 +45,12 @@ PHP 8.5 UPGRADE NOTES
     change, but should more closely match user expectations, demonstrated by
     GH-15753 and GH-16198.
 
+- DOM:
+  . Cloning a DOMNamedNodeMap, DOMNodeList, Dom\NamedNodeMap, Dom\NodeList,
+    Dom\HTMLCollection, and Dom\DtdNamedNodeMap now fails.
+    This never actually resulted in a working object,
+    so the impact should actually be zero.
+
 - FileInfo:
   . finfo_file() and finfo::file() now throws a ValueError instead of a
     TypeError when $filename contains nul bytes.
@@ -264,6 +270,12 @@ PHP 8.5 UPGRADE NOTES
     deprecation warning will bypass the handler with the bad return to ensure
     it is visible; if there are nested output handlers the next one will still
     be used.
+    RFC: https://wiki.php.net/rfc/deprecations_php_8_4
+  . Trying to produce output (e.g. with `echo`) within a user output handler
+    is deprecated. The deprecation warning will bypass the handler producing the
+    output to ensure it is visible; if there are nested output handlers the next
+    one will still be used. If a user output handler returns a non-string and
+    produces output, the warning about producing an output is emitted first.
     RFC: https://wiki.php.net/rfc/deprecations_php_8_4
 
 - Hash:
@@ -592,6 +604,13 @@ PHP 8.5 UPGRADE NOTES
 - CLI/CGI:
   . The `-z` or `--zend-extension` option has been removed as it was
     non-functional. Use `-d zend_extension=<path>` instead.
+
+- PDO_ODBC
+  . The fetch behaviour for larger columns has been changed. Rather than
+    fetching 256 byte blocks, PDO_ODBC will try to fetch a larger block size;
+    currently, this is the page size minus string overhead. Drivers that
+    return SQL_NO_TOTAL in SQLGetData are also better handled as well.
+    This should improve compatibility and performance. See GH-10809, GH-10733.
 
 ========================================
 14. Performance Improvements
