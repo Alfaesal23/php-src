@@ -9,6 +9,8 @@ PHP                                                                        NEWS
     expression). (timwolla)
   . Fixed bug GH-19613 (Stale array iterator pointer). (ilutov)
   . Fixed bug GH-19679 (zend_ssa_range_widening may fail to converge). (Arnaud)
+  . Using null as an array offset or when calling array_key_exists() is now
+    deprecated. (alexandre-daubois)
 
 - Date:
   . Fixed date_sunrise() and date_sunset() with partial-hour UTC offset.
@@ -39,6 +41,11 @@ PHP                                                                        NEWS
 - Standard:
   . Fix GH-19610 (Deprecation warnings in functions taking as argument).
     (Girgias)
+
+- Streams:
+  . Fixed bug GH-14506 (Closing a userspace stream inside a userspace handler
+    causes heap corruption). (nielsdos)
+  . Avoid double conversion to string in php_userstreamop_readdir(). (nielsdos)
 
 - URI:
   . Fixed memory management of Uri\WhatWg\Url objects. (timwolla)
